@@ -6,7 +6,7 @@ var __assign = (this && this.__assign) || Object.assign || function(t) {
     }
     return t;
 };
-var createStore = function (initState) {
+var createStore = function (reducer, initState) {
     var state = initState;
     var listeners = [];
     function subscribe(listener) {
@@ -17,8 +17,8 @@ var createStore = function (initState) {
             listeners[i]();
         }
     }
-    function changeState(newState) {
-        state = newState;
+    function dispatch(action) {
+        state = reducer(state, action);
         notify();
     }
     function getState() {
@@ -26,7 +26,7 @@ var createStore = function (initState) {
     }
     return {
         subscribe: subscribe,
-        changeState: changeState,
+        dispatch: dispatch,
         getState: getState
     };
 };
@@ -39,7 +39,22 @@ var initState = {
         description: ''
     }
 };
-var store = createStore(initState);
+var reducer = function (state, action) {
+    switch (action.type) {
+        case 'INCREMENT': {
+            return __assign({}, state, { counter: {
+                    count: state.counter.count + action.payload
+                } });
+        }
+        case 'DECREMENT': {
+            return __assign({}, state, { counter: {
+                    count: state.counter.count - action.payload
+                } });
+        }
+        default: return state;
+    }
+};
+var store = createStore(reducer, initState);
 store.subscribe(function () {
     var state = store.getState();
     console.log(state.info.name + ": " + state.info.description);
@@ -48,13 +63,15 @@ store.subscribe(function () {
     var state = store.getState();
     console.log(state.counter.count);
 });
-store.changeState(__assign({}, store.getState(), { info: {
-        name: 'jack',
-        description: 'is a boy'
-    } }));
-store.changeState(__assign({}, store.getState(), { counter: {
-        count: 2
-    } }));
-store.changeState(__assign({}, store.getState(), { counter: {
-        count: 'whatever but not a number'
-    } }));
+store.dispatch({
+    type: 'INCREMENT',
+    payload: 2
+});
+store.dispatch({
+    type: 'DECREMENT',
+    payload: 1
+});
+store.dispatch({
+    type: 'whatever',
+    payload: 'not a number'
+});

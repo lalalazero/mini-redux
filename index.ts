@@ -1,6 +1,6 @@
 
 
-const createStore = function(initState: any){
+const createStore = function(reducer: Function, initState: any){
     let state = initState
     let listeners: Function[] = []
 
@@ -14,8 +14,8 @@ const createStore = function(initState: any){
         }
     }
 
-    function changeState(newState: any){
-        state = newState 
+    function dispatch(action: any){
+        state = reducer(state, action) 
         notify()
     }
 
@@ -25,7 +25,7 @@ const createStore = function(initState: any){
 
     return {
         subscribe,
-        changeState,
+        dispatch,
         getState
     }
 }
@@ -40,7 +40,29 @@ let initState = {
     }
 }
 
-let store = createStore(initState)
+let reducer = (state: any, action: any) => {
+    switch(action.type){
+        case 'INCREMENT': {
+            return {
+                ...state,
+                counter: {
+                    count: state.counter.count + action.payload
+                }
+            }
+        }
+        case 'DECREMENT': {
+            return {
+                ...state,
+                counter: {
+                    count: state.counter.count - action.payload
+                }
+            }
+        }
+        default: return state
+    }
+}
+
+let store = createStore(reducer, initState)
 
 store.subscribe(() => {
     let state = store.getState()
@@ -52,25 +74,18 @@ store.subscribe(() => {
     console.log(state.counter.count)
 })
 
-store.changeState({
-    ...store.getState(),
-    info: {
-        name: 'jack',
-        description: 'is a boy'
-    }
+store.dispatch({
+    type: 'INCREMENT',
+    payload: 2
 })
 
 
-store.changeState({
-    ...store.getState(),
-    counter: {
-        count: 2
-    }
+store.dispatch({
+    type: 'DECREMENT',
+    payload: 1,
 })
 
-store.changeState({
-    ...store.getState(),
-    counter: {
-        count: 'whatever but not a number'
-    }
+store.dispatch({
+    type: 'whatever',
+    payload: 'not a number'
 })
