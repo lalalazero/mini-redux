@@ -1,0 +1,11 @@
+{
+  "name": "mini-redux",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/lalalazero/mini-redux",
+  "author": "lalalazero <zzzero520@hotmail.com>",
+  "license": "MIT",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org"
+  }
+}
