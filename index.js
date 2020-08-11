@@ -6,6 +6,21 @@ var __assign = (this && this.__assign) || Object.assign || function(t) {
     }
     return t;
 };
+function combineReducers(reducers) {
+    var reducerKeys = Object.keys(reducers);
+    return function combination(state, action) {
+        if (state === void 0) { state = {}; }
+        var nextState = {};
+        for (var i = 0; i < reducerKeys.length; i++) {
+            var key = reducerKeys[i];
+            var reducer_1 = reducers[key];
+            var previousStateForKey = state[key];
+            var nextStateForKey = reducer_1(previousStateForKey, action);
+            nextState[key] = nextStateForKey;
+        }
+        return nextState;
+    };
+}
 var createStore = function (reducer, initState) {
     var state = initState;
     var listeners = [];
@@ -25,6 +40,7 @@ var createStore = function (reducer, initState) {
         return state;
     }
     return {
+        combineReducers: combineReducers,
         subscribe: subscribe,
         dispatch: dispatch,
         getState: getState
@@ -54,7 +70,25 @@ var reducer = function (state, action) {
         default: return state;
     }
 };
-var store = createStore(reducer, initState);
+var counterReducer = function (state, action) {
+    switch (action.type) {
+        case 'INCREMENT': {
+            return __assign({}, state, { count: state.count + action.payload });
+        }
+        case 'DECREMENT': {
+            return __assign({}, state, { count: state.count - action.payload });
+        }
+        default: return state;
+    }
+};
+var infoReducer = function (state, action) {
+    return state;
+};
+var reducerOfCombined = combineReducers({
+    counter: counterReducer,
+    info: infoReducer
+});
+var store = createStore(reducerOfCombined, initState);
 store.subscribe(function () {
     var state = store.getState();
     console.log(state.info.name + ": " + state.info.description);

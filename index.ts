@@ -1,7 +1,25 @@
 
 
+
+function combineReducers(reducers: any){
+    const reducerKeys = Object.keys(reducers)
+    return function combination(state: any = {}, action: any){
+        const nextState: any = {}
+        for(let i = 0; i < reducerKeys.length; i++){
+            const key = reducerKeys[i]
+            const reducer = reducers[key]
+            const previousStateForKey = state[key]
+            const nextStateForKey = reducer(previousStateForKey, action)
+            nextState[key] = nextStateForKey
+        }
+        return nextState
+    }
+
+}
+
+
 const createStore = function(reducer: Function, initState: any){
-    let state = initState
+    let state: any = initState
     let listeners: Function[] = []
 
     function subscribe(listener: Function){
@@ -24,6 +42,7 @@ const createStore = function(reducer: Function, initState: any){
     }
 
     return {
+        combineReducers,
         subscribe,
         dispatch,
         getState
@@ -62,7 +81,34 @@ let reducer = (state: any, action: any) => {
     }
 }
 
-let store = createStore(reducer, initState)
+let counterReducer = (state: any, action: any) => {
+    switch(action.type){
+        case 'INCREMENT': {
+            return {
+                ...state,
+                count: state.count + action.payload
+            }
+        }
+        case 'DECREMENT': {
+            return {
+                ...state,
+                count: state.count - action.payload
+            }
+        }
+        default: return state
+    }
+}
+
+let infoReducer = (state: any, action: any) => {
+    return state
+}
+
+let reducerOfCombined = combineReducers({
+    counter: counterReducer,
+    info: infoReducer,
+})
+
+let store = createStore(reducerOfCombined, initState)
 
 store.subscribe(() => {
     let state = store.getState()
