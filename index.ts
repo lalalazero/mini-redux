@@ -18,7 +18,7 @@ function combineReducers(reducers: any){
 }
 
 
-const createStore = function(reducer: Function, initState: any){
+const createStore = function(reducer: Function, initState?: any){
     let state: any = initState
     let listeners: Function[] = []
 
@@ -38,8 +38,14 @@ const createStore = function(reducer: Function, initState: any){
     }
 
     function getState(){
-        return state
+        return state   
     }
+
+    const initAction = {
+        type: Symbol('')
+    }
+
+    dispatch(initAction)
 
     return {
         combineReducers,
@@ -49,39 +55,7 @@ const createStore = function(reducer: Function, initState: any){
     }
 }
 
-let initState = {
-    counter: {
-        count: 0
-    },
-    info: {
-        name: '',
-        description: ''
-    }
-}
-
-let reducer = (state: any, action: any) => {
-    switch(action.type){
-        case 'INCREMENT': {
-            return {
-                ...state,
-                counter: {
-                    count: state.counter.count + action.payload
-                }
-            }
-        }
-        case 'DECREMENT': {
-            return {
-                ...state,
-                counter: {
-                    count: state.counter.count - action.payload
-                }
-            }
-        }
-        default: return state
-    }
-}
-
-let counterReducer = (state: any, action: any) => {
+let counterReducer = (state = { count: 0 }, action: any) => {
     switch(action.type){
         case 'INCREMENT': {
             return {
@@ -99,7 +73,7 @@ let counterReducer = (state: any, action: any) => {
     }
 }
 
-let infoReducer = (state: any, action: any) => {
+let infoReducer = (state: { name: '', description: ''} = { name: '', description: ''}, action: any) => {
     return state
 }
 
@@ -108,7 +82,9 @@ let reducerOfCombined = combineReducers({
     info: infoReducer,
 })
 
-let store = createStore(reducerOfCombined, initState)
+let store = createStore(reducerOfCombined)
+
+console.log(store.getState())
 
 store.subscribe(() => {
     let state = store.getState()
