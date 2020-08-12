@@ -1,28 +1,28 @@
-import React , { Component, ComponentType } from 'react'
+import React, { Component, ComponentType } from 'react'
 import { createStoreSimple } from './createSimple'
 
-const store = createStoreSimple({})
+const store = createStoreSimple({ count: 12 })
 
-export default function connect(WrapComponent: ComponentType<any>){
+export default function connect(WrapComponent: ComponentType<any>) {
     return class Connected extends Component {
-        constructor(props: {}){
+        constructor(props: {}) {
             super(props)
             this.state = store.getState()
         }
-        
-        unsub(){}
 
-        componentDidMount(){
+        unsub() { }
+
+        componentDidMount() {
             this.unsub = store.subscribe(() => {
                 this.setState(store.getState())
             })
         }
 
-        componentWillUnmount(){
+        componentWillUnmount() {
             this.unsub()
         }
 
-        render(){
+        render() {
             return <WrapComponent  {...this.state} {...this.props} />
         }
     }

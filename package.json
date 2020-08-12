@@ -22,7 +22,7 @@
     "test": "jest src --coverage",
     "build:esm": "rm -rf esm && tsc --declaration",
     "build:cjs": "rm -rf cjs && tsc --declaration --module commonjs --outDir cjs",
-    "dev:provider": "cross-env WITH_PROVIDER=true && npm run dev:example",
+    "dev:provider": "cross-env WITH_PROVIDER=true npm run dev:example",
     "dev:example": "webpack-dev-server --config ./example/webpack.config.js"
   },
   "keywords": [],

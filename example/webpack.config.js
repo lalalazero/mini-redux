@@ -15,15 +15,15 @@ module.exports = {
                     loader: 'babel-loader',
                     options: {
                         presets: [
-                          '@babel/preset-env',
-                          '@babel/preset-react',
-                          '@babel/preset-typescript'
+                            '@babel/preset-env',
+                            '@babel/preset-react',
+                            '@babel/preset-typescript'
                         ],
                         plugins: [
                             ['@babel/plugin-proposal-class-properties'],
                             ['@babel/plugin-proposal-object-rest-spread']
                         ]
-                      }
+                    }
                 }
             }
         ]
@@ -33,5 +33,5 @@ module.exports = {
             template: './example/index.html',
         })
     ],
-    
+
 }

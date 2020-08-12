@@ -1,13 +1,31 @@
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
+import connectSimple from '../../src/connectSimple'
 
-class App extends Component {
-    constructor(props){
+class StoreSimpleDemo extends Component {
+    constructor(props) {
         super(props)
     }
 
-    render(){
-        return <div>app-with-provider</div>
+    render() {
+        return <div>
+            <p>StoreSimpleDemo</p>
+            count: {this.props.count}
+        </div>
+    }
+}
+
+const Connected = connectSimple(StoreSimpleDemo)
+
+class App extends Component {
+    constructor(props) {
+        super(props)
+    }
+
+    render() {
+        return <div>app-with-provider
+            <Connected />
+        </div>
     }
 }
 
