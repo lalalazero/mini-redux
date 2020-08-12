@@ -1,4 +1,6 @@
-import { createStore, combineReducers } from '../index'
+import miniRedux from '../index'
+const { Store } = miniRedux
+const { createStore, combineReducers } = Store
 
 test('combineReducers', () => {
     let counterReducer = (state = { count: 0 }, action: any) => {
