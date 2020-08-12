@@ -1,5 +1,4 @@
-import miniRedux from '../index'
-const { StoreSimple } = miniRedux
+import { StoreSimple }  from '../index'
 const { createStoreSimple } = StoreSimple
 
 

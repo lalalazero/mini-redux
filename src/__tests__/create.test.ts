@@ -1,5 +1,4 @@
-import miniRedux from '../index'
-const { Store } = miniRedux
+import { Store } from '../index'
 const { createStore, combineReducers } = Store
 
 test('combineReducers', () => {
@@ -36,7 +35,7 @@ test('combineReducers', () => {
 
 
 test('dispatch', () => {
-    let countReducer: Function = (state = 0, action: { type: string }) => {
+    let countReducer: Function = (state: number = 0, action: { type: string }) => {
         switch(action.type) {
             case 'add': {
                 return state + 1
@@ -60,7 +59,7 @@ test('dispatch', () => {
 
 
 test('subscribe and unsubscribe', () => {
-    let countReducer: Function = (state = 0, action: { type: string }) => {
+    let countReducer: Function = (state: number = 0, action: { type: string }) => {
         switch(action.type) {
             case 'add': {
                 return state + 1

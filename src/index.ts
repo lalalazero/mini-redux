@@ -1,4 +1,5 @@
-import * as Store from './create'
-import * as StoreSimple from './createSimple'
+import * as Create from './create'
+import * as CreateSimple from './createSimple'
 
-export default { Store, StoreSimple }
+export const Store = Create
+export const StoreSimple = CreateSimple
