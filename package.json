@@ -1,11 +1,36 @@
 {
   "name": "mini-redux",
   "version": "1.0.0",
-  "main": "index.js",
-  "repository": "https://github.com/lalalazero/mini-redux",
+  "main": "cjs/index.js",
+  "module": "esm/index.js",
+  "types": "cjs/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lalalazero/mini-redux.git"
+  },
   "author": "lalalazero <zzzero520@hotmail.com>",
   "license": "MIT",
   "publishConfig": {
     "registry": "https://registry.npmjs.org"
+  },
+  "description": "",
+  "bugs": {
+    "url": "https://github.com/lalalazero/mini-redux/issues"
+  },
+  "homepage": "https://github.com/lalalazero/mini-redux#readme",
+  "scripts": {
+    "test": "jest src --coverage",
+    "build:esm": "rm -rf esm && tsc --declaration",
+    "build:cjs": "rm -rf cjs && tsc --declaration --module commonjs --outDir cjs"
+  },
+  "keywords": [],
+  "devDependencies": {
+    "@types/enzyme": "^3.10.5",
+    "@types/jest": "^26.0.9",
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.3",
+    "jest": "^26.3.0",
+    "ts-jest": "^26.2.0",
+    "typescript": "^3.9.7"
   }
 }
