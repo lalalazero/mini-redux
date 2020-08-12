@@ -24,6 +24,10 @@ export const createStore = function(reducer: Function, initState?: any){
 
     function subscribe(listener: Function){
         listeners.push(listener)
+        return function unsubscribe(){
+            let index = listeners.indexOf(listener)
+            listeners.splice(index, 1)
+        }
     }
 
     function notify(){

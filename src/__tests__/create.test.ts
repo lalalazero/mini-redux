@@ -1,64 +1,92 @@
 import { createStore, combineReducers } from '../index'
 
-// test('create', () => {
-//     let store = createStore()
-// })
-
-let counterReducer = (state = { count: 0 }, action: any) => {
-    switch(action.type){
-        case 'INCREMENT': {
-            return {
-                ...state,
-                count: state.count + action.payload
+test('combineReducers', () => {
+    let counterReducer = (state = { count: 0 }, action: any) => {
+        switch(action.type){
+            case 'INCREMENT': {
+                return {
+                    ...state,
+                    count: state.count + action.payload
+                }
             }
-        }
-        case 'DECREMENT': {
-            return {
-                ...state,
-                count: state.count - action.payload
+            case 'DECREMENT': {
+                return {
+                    ...state,
+                    count: state.count - action.payload
+                }
             }
+            default: return state
         }
-        default: return state
     }
-}
-
-let infoReducer = (state: { name: '', description: ''} = { name: '', description: ''}, action: any) => {
-    return state
-}
-
-let reducerOfCombined = combineReducers({
-    counter: counterReducer,
-    info: infoReducer,
-})
-
-let store = createStore(reducerOfCombined)
-
-console.log('test with node.js')
-
-console.log(store.getState())
-
-store.subscribe(() => {
-    let state = store.getState()
-    console.log(`${state.info.name}: ${state.info.description}`)
-})
-
-store.subscribe(() => {
-    let state = store.getState()
-    console.log(state.counter.count)
-})
-
-store.dispatch({
-    type: 'INCREMENT',
-    payload: 2
+    
+    let infoReducer = (state: { name: '', description: ''} = { name: '', description: ''}, action: any) => {
+        return state
+    }
+    
+    let reducerOfCombined = combineReducers({
+        counter: counterReducer,
+        info: infoReducer,
+    })
+    
+    let store = createStore(reducerOfCombined)
+    expect(store.getState()).toEqual({ info: { name: '', description: ''}, counter: { count: 0 }})
 })
 
 
-store.dispatch({
-    type: 'DECREMENT',
-    payload: 1,
+test('dispatch', () => {
+    let countReducer: Function = (state = 0, action: { type: string }) => {
+        switch(action.type) {
+            case 'add': {
+                return state + 1
+            }
+            case 'minus': {
+                return state - 1
+            }
+            default: return state
+        }
+
+    }
+    let store = createStore(combineReducers({
+        count: countReducer
+    }))
+    expect(store.getState()).toEqual({ count: 0})
+    store.dispatch({
+        type: 'add'
+    })
+    expect(store.getState()).toEqual({ count: 1})
 })
 
-store.dispatch({
-    type: 'whatever',
-    payload: 'not a number'
+
+test('subscribe and unsubscribe', () => {
+    let countReducer: Function = (state = 0, action: { type: string }) => {
+        switch(action.type) {
+            case 'add': {
+                return state + 1
+            }
+            case 'minus': {
+                return state - 1
+            }
+            default: return state
+        }
+    }
+    let store = createStore(combineReducers({
+        count: countReducer
+    }))
+    expect(store.getState()).toEqual({ count: 0})
+    const listener1 = jest.fn()
+    const unsubscribe = store.subscribe(listener1)
+
+    store.dispatch({
+        type: 'add'
+    })
+    expect(listener1).toBeCalled()
+    expect(store.getState()).toEqual({ count: 1})
+    unsubscribe()
+    store.dispatch({
+        type: 'add'
+    })
+    expect(listener1).toHaveBeenCalledTimes(1)
+    expect(store.getState()).toEqual({ count: 2})
+
 })
+
