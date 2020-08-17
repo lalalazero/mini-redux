@@ -7,11 +7,14 @@ export default function connect(mapStateToProps: (state: StateType) => StateType
         return class Connected extends Component<{ store: StoreType }> {
             static contextType = StoreContext
             // declare store: StoreType will accur errors with babel-loader
+            store: any // to remove ts error
+            actions: any // to remove ts error
             unsub() { }
             constructor(props: any, context: StoreType) {
                 super(props, context)
                 this.store = context
                 this.state = mapStateToProps(this.store.getState())
+                this.actions = mapDispatchToProps(this.store.dispatch)
             }
             componentDidMount() {
                 this.unsub = this.store.subscribe(() => {
@@ -23,8 +26,8 @@ export default function connect(mapStateToProps: (state: StateType) => StateType
                 this.unsub()
             }
             render() {
-                const actions = mapDispatchToProps(this.store.dispatch)
-                return <WrapComponent  {...this.state} {...this.props} {...actions} />
+                
+                return <WrapComponent  {...this.state} {...this.props} {...this.actions} />
 
             }
         }
