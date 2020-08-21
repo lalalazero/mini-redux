@@ -17,7 +17,8 @@ export function applyMiddlewares(middlewares: Function[]) {
     return function rewriteStore(oldCreateStore: Function){
         return function newCreateStore(reducer: Function, initState: any) {
             let store = oldCreateStore(reducer, initState)
-            let dispatch = store.dispatch 
+            let { dispatch, getState }= store
+            middlewares = middlewares.map(middleware => middleware({ getState, dispatch }))
             middlewares.reverse().map(middleware => {
                 dispatch = middleware(dispatch)
             })

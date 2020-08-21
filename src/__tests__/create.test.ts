@@ -106,20 +106,26 @@ describe('test create.ts', () => {
         }
         
         let executionOrder: number[] = []
-        const A = (next: Function) => (action: any) => {
+        const A = ({ getState, dispatch }: { getState: Function, dispatch: Function }) => (next: Function) => (action: any) => {
             executionOrder.push(1)
+            expect(getState().count).toEqual(0)
             next(action)
+            expect(getState().count).toEqual(1)
             executionOrder.push(6)
         }
-        const B = (next: Function) => (action: any) => {
+        const B = ({ getState, dispatch }: { getState: Function, dispatch: Function }) => (next: Function) => (action: any) => {
             executionOrder.push(2)
+            expect(getState().count).toEqual(0)
             next(action)
             executionOrder.push(5)
+            expect(getState().count).toEqual(1)
         }
-        const C = (next: Function) => (action: any) => {
+        const C = ({ getState, dispatch }: { getState: Function, dispatch: Function }) => (next: Function) => (action: any) => {
             executionOrder.push(3)
+            expect(getState().count).toEqual(0)
             next(action)
             executionOrder.push(4)
+            expect(getState().count).toEqual(1)
         }
 
         let store = createStore(combineReducers({
