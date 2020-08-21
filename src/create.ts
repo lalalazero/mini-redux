@@ -13,7 +13,26 @@ export function combineReducers(reducers: any) {
     }
 }
 
-export const createStore = function (reducer?: Function, initState?: any) {
+export function applyMiddlewares(middlewares: Function[]) {
+    return function rewriteStore(oldCreateStore: Function){
+        return function newCreateStore(reducer: Function, initState: any) {
+            let store = oldCreateStore(reducer, initState)
+            let dispatch = store.dispatch 
+            middlewares.reverse().map(middleware => {
+                dispatch = middleware(dispatch)
+            })
+            store.dispatch = function(action: any){
+                dispatch(action)
+            }
+            return store
+        }
+    }
+}
+
+export const createStore = function (reducer: Function, initState: any, rewriteStore?: Function) {
+    if (rewriteStore && typeof rewriteStore === 'function') {
+        return rewriteStore(createStore)(reducer, initState)
+    }
     let state: any = initState
     let listeners: Function[] = []
     function subscribe(listener: Function) {
