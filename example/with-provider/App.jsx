@@ -24,8 +24,11 @@ class StoreDemo extends Component {
         return <div>
             <p>StoreDemo</p>
             <p>count: {this.props.count}</p>
+            <p>从 APP 传递给 connect 函数的 random 随机数: {this.props.random}</p>
+            <p>当前组件 re-render 了： {Math.random()}</p>
             <button onClick={() => this.props.add()}>+1</button>
             <button onClick={() => this.props.minus()}>-1</button>
+            <button onClick={this.props.genRandom}>改变随机数</button>
         </div>
     }
 }
@@ -46,11 +49,20 @@ const Connected = connect(mapStateToProps, mapDispatchToProps)(StoreDemo)
 class App extends Component {
     constructor(props) {
         super(props)
+        this.state = {
+            random: Math.random()
+        }
+        
+    }
+    genRandom = () => {
+        this.setState({
+            random: Math.random()
+        })
     }
     render() {
         return <Provider store={store}>
             <div>app-with-provider
-                    <Connected />
+                    <Connected random={this.state.random} genRandom={this.genRandom}/>
             </div>
         </Provider>
 
