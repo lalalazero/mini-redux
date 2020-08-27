@@ -1,5 +1,5 @@
 import { Store } from '../index'
-const { createStore, combineReducers, applyMiddlewares } = Store
+const { createStore, combineReducers, applyMiddlewares, bindActionCreators } = Store
 
 describe('test create.ts', () => {
     test('combineReducers', () => {
@@ -139,6 +139,75 @@ describe('test create.ts', () => {
         expect(store.getState().count).toEqual(1)
         expect(executionOrder.toString()).toEqual('1,2,3,4,5,6')
 
+    })
+
+    test('bindActionCreators - test actionCreator is a function', () => {
+        let countReducer: Function = (state: number = 0, action: { type: string, payload?: number }) => {
+            switch(action.type) {
+                case 'add': {
+                    return action.payload ? state + action.payload : state + 1
+                }
+                case 'minus': {
+                    return action.payload ? state - action.payload : state - 1
+                }
+                default: return state
+            }
+    
+        }
+        let store = createStore(combineReducers({
+            count: countReducer
+        }), {})
+        let actionCreator = function(type: 'add' | 'minus' = 'add', payload: number = 1){
+            return {
+                type,
+                payload
+            }
+        }
+        let boundActions = bindActionCreators(actionCreator, store.dispatch) as Function
+        boundActions()
+        expect(store.getState()).toEqual({ count: 1 })
+        boundActions('add', 2)
+        expect(store.getState()).toEqual({ count: 3 })
+        boundActions('minus', 3)
+        expect(store.getState()).toEqual({ count: 0 })
+    })
+
+    test('bindActionCreators - test actionCreator is a object', () => {
+        let countReducer: Function = (state: number = 0, action: { type: string, payload?: number }) => {
+            switch(action.type) {
+                case 'add': {
+                    return action.payload ? state + action.payload : state + 1
+                }
+                case 'minus': {
+                    return action.payload ? state - action.payload : state - 1
+                }
+                default: return state
+            }
+    
+        }
+        let store = createStore(combineReducers({
+            count: countReducer
+        }), {})
+        let add = function(payload: number = 1){
+            return {
+                type: 'add',
+                payload
+            }
+        }
+        let minus = function(payload: number = 1) {
+            return {
+                type: 'minus',
+                payload
+            }
+        }
+        let actionCreator = { add, minus }
+        let boundActions = bindActionCreators(actionCreator, store.dispatch) as { [key: string]: Function }
+        boundActions.add(1)
+        expect(store.getState()).toEqual({ count: 1 })
+        boundActions.add(2)
+        expect(store.getState()).toEqual({ count: 3 })
+        boundActions.minus(3)
+        expect(store.getState()).toEqual({ count: 0 })
     })
 })
 
