@@ -13,6 +13,10 @@
   "publishConfig": {
     "registry": "https://registry.npmjs.org"
   },
+  "files": [
+    "cjs/**/*",
+    "esm/**/*"
+  ],
   "description": "",
   "bugs": {
     "url": "https://github.com/lalalazero/mini-redux/issues"
