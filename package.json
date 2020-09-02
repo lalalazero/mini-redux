@@ -1,6 +1,6 @@
 {
-  "name": "mini-redux",
-  "version": "1.0.0",
+  "name": "@zerocodes/mini-redux",
+  "version": "0.0.2",
   "main": "cjs/index.js",
   "module": "esm/index.js",
   "types": "cjs/index.d.ts",
@@ -11,13 +11,14 @@
   "author": "lalalazero <zzzero520@hotmail.com>",
   "license": "MIT",
   "publishConfig": {
-    "registry": "https://registry.npmjs.org"
+    "registry": "https://registry.npmjs.org",
+    "access": "public"
   },
   "files": [
     "cjs/**/*",
     "esm/**/*"
   ],
-  "description": "",
+  "description": "a step by step implement of redux & react-redux",
   "bugs": {
     "url": "https://github.com/lalalazero/mini-redux/issues"
   },
@@ -39,7 +40,8 @@
     "@babel/preset-typescript": "^7.10.4",
     "@babel/types": "^7.11.0",
     "@types/enzyme": "^3.10.5",
-    "@types/jest": "^26.0.9",
+    "@types/jest": "^26.0.12",
+    "@types/mocha": "^8.0.3",
     "@types/shallowequal": "^1.1.1",
     "babel-loader": "^8.1.0",
     "cross-env": "^7.0.2",
