@@ -1,6 +1,5 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createStore = exports.applyMiddlewares = exports.bindActionCreators = exports.combineReducers = void 0;
 function combineReducers(reducers) {
     var reducerKeys = Object.keys(reducers);
     return function combination(state, action) {

@@ -20,7 +20,7 @@ describe('test createSimple.ts', function () {
     });
     test('setState', function () {
         var store = createStoreSimple({ foo: 'foo', bar: false });
-        store.setState(__assign(__assign({}, store.getState()), { bar: true }));
+        store.setState(__assign({}, store.getState(), { bar: true }));
         expect(store.getState()).toEqual({ foo: 'foo', bar: true });
     });
     test('subscribe and unsubscribe', function () {

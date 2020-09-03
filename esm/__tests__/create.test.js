@@ -17,10 +17,10 @@ describe('test create.ts', function () {
             if (state === void 0) { state = { count: 0 }; }
             switch (action.type) {
                 case 'INCREMENT': {
-                    return __assign(__assign({}, state), { count: state.count + action.payload });
+                    return __assign({}, state, { count: state.count + action.payload });
                 }
                 case 'DECREMENT': {
-                    return __assign(__assign({}, state), { count: state.count - action.payload });
+                    return __assign({}, state, { count: state.count - action.payload });
                 }
                 default: return state;
             }

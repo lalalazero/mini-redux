@@ -1,6 +1,5 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createStoreSimple = void 0;
 exports.createStoreSimple = function (initState) {
     var state = initState;
     var listeners = [];
